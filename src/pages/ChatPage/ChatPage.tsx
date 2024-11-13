@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { Chats_Mock } from '../../modules/mock';
 import { Chat } from '../../modules/types';
 import { useParams } from 'react-router-dom';
@@ -11,7 +11,12 @@ const ChatPage: React.FC = () => {
     const [chat, setChat] = useState<Chat | null>(null);
     const [isMock, setIsMock] = useState(false);
 
-    const fetchData = async () => {
+    const createMocks = () => {
+        setIsMock(true);
+        setChats(Chats_Mock.filter(chat => chat.name.toLowerCase().includes(name.toLowerCase())));
+    };
+
+    const fetchData = useCallback(async () => {
         try {
             const response = await fetch(`/api/chats/${id}`, { signal: AbortSignal.timeout(1000) });
             if (!response.ok) throw new Error('Network response was not ok');
@@ -29,15 +34,18 @@ const ChatPage: React.FC = () => {
                 info: data.Info,
                 nickname: data.Nickname,
                 friends: data.Friends,
-                subscribers: data.Subscribers
+                subscribers: data.Subscribers,
             };
 
             setChat(chatWithProperCase);
+            setIsMock(false);
         } catch (error) {
-            console.error('Fetch error or invalid data:', error);
-            setIsMock(true);
+            console.error('Error fetching chat:', error);
+            if (!isMock) {
+                createMocks();
+            }
         }
-    };
+    }, [id, isMock]);
 
     useEffect(() => {
         if (isMock) {
@@ -51,16 +59,11 @@ const ChatPage: React.FC = () => {
         return () => {
             setChat(null);
         };
-    }, [id, isMock]);
+    }, [id, isMock, fetchData]);
 
     if (!chat) {
-        return <div>Активность не найдена</div>;
+        return <div>Чат не найден</div>;
     }
-
-    // const crumbs = [
-    //     { label: ROUTE_LABELS.CHATS, path: ROUTES.CHATS },
-    //     { label: chat.name }
-    // ];
 
     return (
         <div className="chat-page">

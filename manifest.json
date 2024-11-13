@@ -1,7 +1,7 @@
 {
   "name": "WK",
   "short_name": "WK",
-  "start_url": "/wab-frontend",
+  "start_url": "/wab-frontend/",
   "display": "standalone",
   "background_color": "#fdfdfd",
   "theme_color": "#db4938",

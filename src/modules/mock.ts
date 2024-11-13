@@ -1,9 +1,10 @@
 import { Chat } from "./types.ts";
+// import "../../public/defaultIcon.png"
 
 export const Chats_Mock: Chat[] = [
     {
         id:          1,
-        img:         "../../../defaultIcon.png",
+        img:         "",
         name:        "Мок-чат 1",
         info:        "Какое-то описание",
         nickname:    "@some_chat_1",
@@ -12,7 +13,7 @@ export const Chats_Mock: Chat[] = [
     },
     {
         id:          2,
-        img:         "../../../defaultIcon.png",
+        img:         "",
         name:        "Мок-чат 2",
         info:        "Какое-то описание",
         nickname:    "@some_chat_2",
@@ -21,7 +22,7 @@ export const Chats_Mock: Chat[] = [
     },
     {
         id:          3,
-        img:         "../../../defaultIcon.png",
+        img:         "",
         name:        "Мок-чат 3",
         info:        "Какое-то описание",
         nickname:    "@some_chat_3",
@@ -30,7 +31,7 @@ export const Chats_Mock: Chat[] = [
     },
     {
         id:          4,
-        img:         "../../../defaultIcon.png",
+        img:         "",
         name:        "Мок-чат 4",
         info:        "Какое-то описание",
         nickname:    "@some_chat_4",

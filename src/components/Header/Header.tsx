@@ -1,9 +1,10 @@
 import React from 'react';
 import "./Header.css"
+import {Link} from "react-router-dom";
 const Header: React.FC = () => {
     return (
         <header className="site-header">
-            <a href="/" className="home-link">
+            <Link to="/" className="home-link">
                 <svg width="45px" height="45px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M4.73824 5.89023C4.4012 5.64944 3.93278 5.72746 3.69199 6.0645C3.4512 6.40153 3.52922 6.86995 3.86625 7.11074L4.73824 5.89023ZM10.0825 10.6301L9.64647 11.2404L10.0825 10.6301ZM13.9175 10.6301L13.4815 10.0199L13.9175 10.6301ZM20.1337 7.11074C20.4708 6.86995 20.5488 6.40153 20.308 6.0645C20.0672 5.72746 19.5988 5.64944 19.2617 5.89023L20.1337 7.11074ZM3.86625 7.11074L9.64647 11.2404L10.5185 10.0199L4.73824 5.89023L3.86625 7.11074ZM14.3535 11.2404L20.1337 7.11074L19.2617 5.89023L13.4815 10.0199L14.3535 11.2404ZM9.64647 11.2404C11.0543 12.2462 12.9456 12.2462 14.3535 11.2404L13.4815 10.0199C12.5953 10.6531 11.4047 10.6531 10.5185 10.0199L9.64647 11.2404Z"
@@ -16,11 +17,21 @@ const Header: React.FC = () => {
                         fill="#363853"/>
                 </svg>
                 <span className="logo-text">WK</span>
-            </a>
-            <nav>
-                <a href="/chats" className="nav-link">
-                    <span className={"nav-link-text"}>Чаты</span>
-                </a>
+            </Link>
+            <nav className='nav'>
+                <div className='nav__wrapper'>
+                    <div className='nav__links'>
+                        <Link to='/chats' className='nav__link'>Чаты</Link>
+                    </div>
+                    <div className='nav__mobile-wrapper'
+                         onClick={(event) => event.currentTarget.classList.toggle('active')}
+                    >
+                        <div className='nav__mobile-target'/>
+                        <div className='nav__mobile-menu'>
+                            <Link to="/chats" className='nav__link'>Чаты</Link>
+                        </div>
+                    </div>
+                </div>
             </nav>
         </header>
     );

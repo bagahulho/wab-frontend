@@ -7,9 +7,9 @@ function App() {
     return (
         <BrowserRouter basename="/wab-frontend">
             <Routes>
-                <Route path="/wab-frontend/" index element={<MainPage />} />
-                <Route path="/wab-frontend/chats" element={<ChatsPage />} />
-                <Route path="/wab-frontendchats/:id" element={<ChatPage />} />
+                <Route path="/" index element={<MainPage />} />
+                <Route path="/chats" element={<ChatsPage />} />
+                <Route path="/chats/:id" element={<ChatPage />} />
             </Routes>
         </BrowserRouter>
     );

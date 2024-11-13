@@ -43,3 +43,43 @@
     color: #E1E3E6;
     margin-bottom: 18px;
 }
+
+@media (max-width: 768px) {
+    .profile-container {
+        flex-direction: column; /* Переключаем на вертикальное расположение */
+        margin-top: 60px; /* Уменьшаем отступ сверху */
+    }
+
+    .profile-image {
+        margin-bottom: 50px; /* Добавляем отступ снизу */
+        width: 150px; /* Уменьшаем размеры изображения */
+        height: 150px;
+    }
+
+    .profile-details {
+        width: 100%; /* Разрешаем деталям занимать всю ширину */
+    }
+
+    .profile-details h2 {
+        font-size: 20px; /* Уменьшаем размер заголовка */
+    }
+
+    .profile-details p {
+        font-size: 16px; /* Уменьшаем размер шрифта для текста */
+    }
+}
+
+@media (max-width: 460px) {
+    .profile-image {
+        width: 130px; /* Уменьшаем изображение для маленьких экранов */
+        height: 130px;
+    }
+
+    .profile-details h2 {
+        font-size: 18px; /* Еще больше уменьшаем заголовок */
+    }
+
+    .profile-details p {
+        font-size: 14px; /* Уменьшаем размер текста */
+    }
+}

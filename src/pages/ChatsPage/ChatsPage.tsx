@@ -8,6 +8,8 @@ import ChatCard from "../../components/ChatCard/ChatCard";
 import "./ChatsPage.css";
 import { BreadCrumbs } from "../../components/BreadCrumbs/BreadCrumbs";
 import { ROUTE_LABELS, ROUTES } from "../../Routes";
+import Header from "../../components/Header/Header";
+import {Link} from "react-router-dom";
 
 const ChatsPage = () => {
     const dispatch = useDispatch();
@@ -81,11 +83,11 @@ const ChatsPage = () => {
     }, [name, updateChats]);
 
     return (
-        <>
+        <><Header></Header>
             <BreadCrumbs crumbs={[{ label: ROUTE_LABELS.CHATS, path: ROUTES.CHATS }]} />
             <div className="cart-icon">
                 {cartCount !== 0 ? (
-                    <a href={`/message/${draftID}`}>
+                    <Link to={`/message/${draftID}`}>
                         <svg width="40px" height="40px" viewBox="-0.5 0 25 25" fill="none"
                              xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -99,7 +101,7 @@ const ChatsPage = () => {
                                   strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                         <span className="cart-count">{cartCount}</span>
-                    </a>
+                    </Link>
                 ) : (
                     <svg width="40px" height="40px" viewBox="-0.5 0 25 25" fill="none"
                          xmlns="http://www.w3.org/2000/svg">

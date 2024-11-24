@@ -75,11 +75,10 @@ const ChatsPage = () => {
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(setFilterName(e.target.value)); // Обновляем значение фильтра в Redux
-        updateChats(e.target.value); // Немедленно обновляем список чатов с фильтром
     };
 
     useEffect(() => {
-        updateChats(name); // При монтировании компонента или изменении фильтра
+        updateChats(name);
     }, [name, updateChats]);
 
     return (

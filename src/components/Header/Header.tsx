@@ -48,11 +48,7 @@ const Header: React.FC = () => {
                     <div className='nav__links'>
                         {isAuthenticated ? (
                             <>
-                                {isModerator ?(
-                                    <Link to='/recipient-chats' className='nav__link'>Чаты</Link>
-                                ): (
-                                    <Link to='/chats' className='nav__link'>Чаты</Link>
-                                )}
+                                <Link to='/chats' className='nav__link'>Чаты</Link>
                                 <Link to='/messages' className='nav__link'>Сообщения</Link>
                                 <Link to='/user/profile' className='nav__link'>{username}</Link>
                                 <button className="nav__link" onClick={handleLogout}>
@@ -73,11 +69,7 @@ const Header: React.FC = () => {
                         <div className='nav__mobile-menu'>
                             {isAuthenticated ? (
                                 <>
-                                    {isModerator ?(
-                                        <Link to='/recipient-chats' className='nav__link'>Чаты</Link>
-                                    ): (
-                                        <Link to='/chats' className='nav__link'>Чаты</Link>
-                                    )}
+                                    <Link to='/chats' className='nav__link'>Чаты</Link>
                                     <Link to='/messages' className='nav__link'>Сообщения</Link>
                                     <Link to='/user/profile' className='nav__link'>{username}</Link>
                                     <button className="nav__link" onClick={handleLogout}>

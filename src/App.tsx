@@ -7,15 +7,8 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import MessagesPage from "./pages/MessagesPage/MessagesPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage.tsx";
 import MessagePage from "./pages/MessagePage/MessagePage.tsx";
-import Page404 from "./pages/Page404/Page404.tsx";
-import {useSelector} from "react-redux";
-import {RootState} from "./store";
-import ServicesPage from "./pages/ServicesPage/ServicesPage.tsx";
-import Page403 from "./pages/Page403/Page403.tsx";
 
 function App() {
-    const isModerator = useSelector((state: RootState) => state.auth.isModerator);
-
     return (
         <BrowserRouter basename="/wab-frontend">
             <Routes>
@@ -27,11 +20,6 @@ function App() {
                 <Route path="/user/profile" element={<ProfilePage />} />
                 <Route path="/messages" element={<MessagesPage />} />
                 <Route path="/messages/:id" element={<MessagePage />} />
-                <Route
-                    path="/recipient-chats"
-                        element={isModerator ? <ServicesPage /> : <Page403 />}
-                />
-                <Route path="*" element={<Page404 />} />
             </Routes>
         </BrowserRouter>
     );

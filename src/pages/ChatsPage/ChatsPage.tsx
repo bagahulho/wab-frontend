@@ -1,4 +1,3 @@
-import { Chat } from "../../modules/types";
 import React, { FormEvent, useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilterName } from "../../store/slices/filterSlice";
@@ -10,55 +9,59 @@ import { BreadCrumbs } from "../../components/BreadCrumbs/BreadCrumbs";
 import { ROUTE_LABELS, ROUTES } from "../../Routes";
 import Header from "../../components/Header/Header";
 import {Link} from "react-router-dom";
+import axiosInstance from "../../api/axiosInstance.ts";
+import {DsChatResponse} from "../../api";
 
 const ChatsPage = () => {
     const dispatch = useDispatch();
-    const name = useSelector((state: RootState) => state.filter.name); // Достаем значение фильтра из Redux
-    const [chats, setChats] = useState<Chat[]>([]);
+    const name = useSelector((state: RootState) => state.filter.name);
+    const [chats, setChats] = useState<DsChatResponse[]>([]);
     const [isMock, setIsMock] = useState(false);
     const [cartCount, setCount] = useState(0);
     const [draftID, setDraftID] = useState(0);
 
     const fetchData = useCallback(async (searchName: string) => {
+        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`/api/chats?name=${searchName.toLowerCase()}`, { signal: AbortSignal.timeout(5000) });
+            const response = await axiosInstance.get(`/api/chats?name=${searchName.toLowerCase()}`, {
+                signal: AbortSignal.timeout(5000),
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const result = await response.json();
+            const result = await response.data
 
-            const chatsWithProperCase = result.chats.map((chat: {
-                ID: number,
-                Img: string,
-                Name: string,
-                Info: string,
-                Nickname: string,
-                Friends: number,
-                Subscribers: number
-            }) => ({
-                id: chat.ID,
-                img: chat.Img,
-                name: chat.Name,
-                info: chat.Info,
-                nickname: chat.Nickname,
-                friends: chat.Friends,
-                subscribers: chat.Subscribers
-            }));
-
-            setChats(chatsWithProperCase);
+            setChats(result.chats);
             setCount(result.draft_count || 0);
-            setDraftID(result.draft_id);
+            setDraftID(result.draft_ID);
             setIsMock(false);
         } catch (error) {
             console.error("Fetch error:", error);
             if (!isMock) {
                 setIsMock(true);
-                setChats(Chats_Mock.filter(chat => chat.name.toLowerCase().includes(searchName.toLowerCase())));
+                setChats(Chats_Mock.filter(chat => chat.name?.toLowerCase().includes(searchName.toLowerCase())));
             }
         }
     }, [isMock]);
 
+    const handleAddToMessage = async (chatID: number) => {
+
+        const token = localStorage.getItem("token");
+
+        try {
+            await axiosInstance.post(`/api/chat/${chatID}/in-message`, null, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            // Увеличиваем счетчик корзины
+            setCount(prev => prev + 1);
+        } catch (error) {
+            console.error("Ошибка добавления чата в сообщение:", error);
+        }
+    };
     // Функция для обновления списка чатов с учетом фильтра
     const updateChats = useCallback((newName: string) => {
         if (isMock) {
@@ -86,7 +89,7 @@ const ChatsPage = () => {
             <BreadCrumbs crumbs={[{ label: ROUTE_LABELS.CHATS, path: ROUTES.CHATS }]} />
             <div className="cart-icon">
                 {cartCount !== 0 ? (
-                    <Link to={`/message/${draftID}`}>
+                    <Link to={`/messages/${draftID}`}>
                         <svg width="40px" height="40px" viewBox="-0.5 0 25 25" fill="none"
                              xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -133,6 +136,7 @@ const ChatsPage = () => {
                         <ChatCard
                             key={chat.id}
                             chat={chat}
+                            onAddToMessage={() => handleAddToMessage(chat.id)}
                         />
                     ))}
                 </div>

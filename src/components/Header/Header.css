@@ -61,6 +61,8 @@ header {
     text-decoration: none;
     color: #0095FF;
     position: relative;
+    background: none;
+    border: none;
 }
 
 .nav__link.active::after {

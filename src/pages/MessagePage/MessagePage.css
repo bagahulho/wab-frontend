@@ -1,0 +1,104 @@
+.input-bar {
+    margin: 80px 0;
+}
+
+.input-bar input {
+    width: 100%;
+    height: 34px;
+    padding-left: 30px;
+    font-size: 12.5px;
+    background-color: #222222;
+    border: 2px solid #383838;
+    border-radius: 10px;
+    color: #828282;
+}
+
+.save-button {
+    margin-top: 5px;
+    background: none;
+    color: #999;
+    border: none;
+    cursor: pointer;
+}
+
+.message-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-radius: 10px;
+    background-color: #222222;
+    overflow: hidden;
+}
+
+.message-content .contact-card {
+    display: flex;
+    align-items: center;
+    background-color: #222222;
+    height: 60px;
+    width: 100%;
+    text-decoration: none;
+}
+
+.contact-card .contact-info {
+    text-decoration: none;
+}
+
+.bottom-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.delete-btn-container {
+    margin-top: 20px;
+}
+
+.delete-btn {
+    background-color: #141414;
+    border: none;
+    cursor: pointer;
+}
+
+.form-btn-container {
+    margin-top: 20px;
+}
+
+.form-btn {
+    background-color: #141414;
+    border: none;
+    cursor: pointer;
+}
+
+.sound {
+    width: 60px;
+    height: 60px;
+    font-size: 12.5px;
+    color: #999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: #383838;
+    border-width: 0;
+    border-bottom-width: 2px;
+    border-style: solid;
+}
+
+.sound-checkbox {
+    display: none;
+}
+
+.sound-icon {
+    cursor: pointer;
+}
+
+.sound-off {
+    display: none;
+}
+
+/* Когда чекбокс отмечен, показываем иконку "без звука" */
+.sound-checkbox:checked + label .sound-on {
+    display: none;
+}
+
+.sound-checkbox:checked + label .sound-off {
+    display: block;
+}

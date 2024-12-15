@@ -1,7 +1,32 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import "./Header.css"
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../store";
+import {logout, restoreSession} from "../../store/slices/authSlice.ts";
 const Header: React.FC = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { isAuthenticated, token, username, isModerator } = useSelector((state: RootState) => state.auth);
+
+    useEffect(() => {
+        if (username && token) {
+                dispatch(
+                    restoreSession({
+                        token: token,
+                        username: username,
+                        isModerator: isModerator,
+                    }
+                )
+            );
+        }
+    }, [dispatch]);
+
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/'); // Возвращаем на главную после выхода
+    };
+
     return (
         <header className="site-header">
             <Link to="/" className="home-link">
@@ -21,14 +46,50 @@ const Header: React.FC = () => {
             <nav className='nav'>
                 <div className='nav__wrapper'>
                     <div className='nav__links'>
-                        <Link to='/chats' className='nav__link'>Чаты</Link>
+                        {isAuthenticated ? (
+                            <>
+                                {isModerator ?(
+                                    <Link to='/recipient-chats' className='nav__link'>Чаты</Link>
+                                ): (
+                                    <Link to='/chats' className='nav__link'>Чаты</Link>
+                                )}
+                                <Link to='/messages' className='nav__link'>Сообщения</Link>
+                                <Link to='/user/profile' className='nav__link'>{username}</Link>
+                                <button className="nav__link" onClick={handleLogout}>
+                                    Выйти
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <Link to='/user/register' className='nav__link'>Регистрация</Link>
+                                <Link to='/user/login' className='nav__link'>Вход</Link>
+                            </>
+                        )}
                     </div>
                     <div className='nav__mobile-wrapper'
                          onClick={(event) => event.currentTarget.classList.toggle('active')}
                     >
                         <div className='nav__mobile-target'/>
                         <div className='nav__mobile-menu'>
-                            <Link to="/chats" className='nav__link'>Чаты</Link>
+                            {isAuthenticated ? (
+                                <>
+                                    {isModerator ?(
+                                        <Link to='/recipient-chats' className='nav__link'>Чаты</Link>
+                                    ): (
+                                        <Link to='/chats' className='nav__link'>Чаты</Link>
+                                    )}
+                                    <Link to='/messages' className='nav__link'>Сообщения</Link>
+                                    <Link to='/user/profile' className='nav__link'>{username}</Link>
+                                    <button className="nav__link" onClick={handleLogout}>
+                                        Выйти
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <Link to='/user/register' className='nav__link'>Регистрация</Link>
+                                    <Link to='/user/login' className='nav__link'>Вход</Link>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -38,3 +99,51 @@ const Header: React.FC = () => {
 };
 
 export default Header;
+
+
+// import React from 'react';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { Link, useNavigate } from 'react-router-dom';
+// import { RootState } from '../../store';
+// import { logout } from '../../store/slices/authSlice';
+//
+// const Header: React.FC = () => {
+//
+//     return (
+//         <nav className="navbar navbar-expand-lg navbar-light bg-light">
+//             <div className="container-fluid">
+//                 <Link className="navbar-brand" to="/">Главная</Link>
+//                 <div className="collapse navbar-collapse">
+//                     <ul className="navbar-nav me-auto">
+//                         {isAuthenticated ? (
+//                             <>
+//                                 <li className="nav-item">
+//                                     <Link className="nav-link" to="/chats">Мои заявки</Link>
+//                                 </li>
+//                                 <li className="nav-item">
+//                                     <Link className="nav-link" to="/user/profile">Личный кабинет</Link>
+//                                 </li>
+//                             </>
+//                         ) : (
+//                             <>
+//                                 <li className="nav-item">
+//                                     <Link className="nav-link" to="/user/register">Регистрация</Link>
+//                                 </li>
+//                                 <li className="nav-item">
+//                                     <Link className="nav-link" to="/user/login">Вход</Link>
+//                                 </li>
+//                             </>
+//                         )}
+//                     </ul>
+//                     {isAuthenticated && (
+//                         <button className="btn btn-outline-danger" onClick={handleLogout}>
+//                             Выйти
+//                         </button>
+//                     )}
+//                 </div>
+//             </div>
+//         </nav>
+//     );
+// };
+//
+// export default Header;

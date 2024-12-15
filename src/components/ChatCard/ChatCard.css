@@ -8,6 +8,9 @@
     width: 50%;
     text-decoration: none;
 }
+.contact-card .link {
+    width: 100%;
+}
 
 .avatar {
     margin: 7px;
@@ -47,7 +50,13 @@
     margin-left: 5px;
     margin-bottom: 5px;
 }
-
+.add-btn {
+    /*display: flex;*/
+    /*justify-content: center;*/
+    background-color: #222222;
+    border: none;
+    cursor: pointer;
+}
 /* Медиа запросы для мобильных устройств */
 @media (max-width: 768px) {
     .contact-card {

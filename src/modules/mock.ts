@@ -1,7 +1,6 @@
-import { Chat } from "./types.ts";
-// import "../../public/defaultIcon.png"
+import {DsChatResponse} from "../api";
 
-export const Chats_Mock: Chat[] = [
+export const Chats_Mock: DsChatResponse[] = [
     {
         id:          1,
         img:         "",
@@ -39,33 +38,3 @@ export const Chats_Mock: Chat[] = [
         subscribers: 444,
     },
 ]
-
-// export const SONGS_MOCK: ITunesResult = {
-//     resultCount: 3,
-//     results: [
-//         {
-//             wrapperType: "track",
-//             artistName: "Pink Floyd",
-//             collectionCensoredName: "The Wall",
-//             trackViewUrl: "",
-//             artworkUrl100: "",
-//             collectionId: 0
-//         },
-//         {
-//             wrapperType: "track",
-//             artistName: "Queen",
-//             collectionCensoredName: "A Night At The Opera",
-//             trackViewUrl: "",
-//             artworkUrl100: "",
-//             collectionId: 0
-//         },
-//         {
-//             wrapperType: "track",
-//             artistName: "AC/DC",
-//             collectionCensoredName: "Made in Heaven",
-//             trackViewUrl: "",
-//             artworkUrl100: "",
-//             collectionId: 0
-//         },
-//     ],
-// };

@@ -14,7 +14,7 @@ import ServicesPage from "./pages/ServicesPage/ServicesPage.tsx";
 import Page403 from "./pages/Page403/Page403.tsx";
 
 function App() {
-    const isModerator = useSelector((state: RootState) => state.auth.isModerator);
+    const { isModerator, isAuthenticated} = useSelector((state: RootState) => state.auth);
 
     return (
         <BrowserRouter basename="/wab-frontend">
@@ -22,11 +22,26 @@ function App() {
                 <Route path="/" index element={<MainPage />} />
                 <Route path="/chats" element={<ChatsPage />} />
                 <Route path="/chats/:id" element={<ChatPage />} />
-                <Route path="/user/register" element={<RegisterPage />} />
-                <Route path="/user/login" element={<LoginPage />} />
-                <Route path="/user/profile" element={<ProfilePage />} />
-                <Route path="/messages" element={<MessagesPage />} />
-                <Route path="/messages/:id" element={<MessagePage />} />
+                <Route
+                    path="/user/register"
+                    element={!isAuthenticated ? <RegisterPage /> : <Page403 />}
+                />
+                <Route
+                    path="/user/login"
+                    element={!isAuthenticated ? <LoginPage /> : <Page403 />}
+                />
+                <Route
+                    path="/user/profile"
+                    element={isAuthenticated ? <ProfilePage /> : <Page403 />}
+                />
+                <Route
+                    path="/messages"
+                    element={isModerator || isAuthenticated ? <MessagesPage /> : <Page403 />}
+                />
+                <Route
+                    path="/messages/:id"
+                    element={isModerator || isAuthenticated ? <MessagePage /> : <Page403 />}
+                />
                 <Route
                     path="/recipient-chats"
                         element={isModerator ? <ServicesPage /> : <Page403 />}

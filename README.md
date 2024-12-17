@@ -1,9 +1,14 @@
-# Система рассылок
+# Mailing-service
 
-Цель системы, включающей в себя веб-сервис, веб-приложение и нативное приложение заключается в том, 
-чтобы осуществлять отправку одного сообщения нескольким отправителям.
+1. [Фронтенд](https://github.com/bagahulho/mailing-service-frontend)
+2. [Бэкенд](https://github.com/bagahulho/mailing-service-backend)
 
-### Репозитории:
+## Фронтенд
 
-- Frontend (React): https://github.com/bagahulho/WAB-frontend (этот репозиторий)
-- Backend (Golang): https://github.com/bagahulho/WAB-backend 
+### Ветки
+- **React**: копия SSR версии приложения с моковыми данными
+- **Redux**: добавлена адаптивность и развертывание
+- **gh-pages**: ветка для развертывания на github pages
+- **tauri**: ветка с десктопным приложением Tauri
+- **sender-interface**: полный интерфейс отправителя (пользователя)
+- **recipient-interface**: полный интерфейс адресата (модератора)

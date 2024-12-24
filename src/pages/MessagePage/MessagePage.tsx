@@ -68,7 +68,7 @@ const MessagePage: React.FC = () => {
             });
             setMessage({ ...message, text: response.data.text });
         } catch (err) {
-            alert("Ошибка при обновлении текста сообщения");
+            console.log("Ошибка при обновлении текста сообщения");
         }
     };
 
@@ -83,7 +83,7 @@ const MessagePage: React.FC = () => {
                 ),
             });
         } catch (err) {
-            alert("Ошибка при переключении звука");
+            console.log("Ошибка при переключении звука");
         }
     };
     const handleDeleteChat = async (chatId: number) => {
@@ -95,7 +95,7 @@ const MessagePage: React.FC = () => {
                 chats: message.chats.filter(chat => chat.id !== chatId),
             });
         } catch (err) {
-            alert("Ошибка удаления чата");
+            console.log("Ошибка удаления чата");
         }
     };
 
@@ -104,10 +104,10 @@ const MessagePage: React.FC = () => {
         try {
             // Запрос на сервер для отправки сообщения
             await axiosInstance.put(`/api/messages/${id}/form`);
-            alert("Сообщение успешно отправлено");
+            console.log("Сообщение успешно отправлено");
             navigate("/messages"); // Перенаправляем пользователя на список сообщений
         } catch (err) {
-            alert("Ошибка при отправке сообщения. Возможно пустой текст");
+            console.log("Ошибка при отправке сообщения. Возможно пустой текст");
         }
     };
 
@@ -117,7 +117,7 @@ const MessagePage: React.FC = () => {
             await axiosInstance.delete(`/api/messages/${id}/delete`);
             navigate("/messages");
         } catch (err) {
-            alert("Ошибка при удалении сообщения");
+            console.log("Ошибка при удалении сообщения");
         }
     };
 

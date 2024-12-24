@@ -7,20 +7,25 @@ import {logout, restoreSession} from "../../store/slices/authSlice.ts";
 const Header: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isAuthenticated, token, username, isModerator } = useSelector((state: RootState) => state.auth);
+    const { isAuthenticated, token } = useSelector((state: RootState) => state.auth);
+    const username = useSelector((state: RootState) => state.auth.username);
 
     useEffect(() => {
-        if (username && token) {
+        // Восстановление сессии, если токен доступен
+        if (token && !isAuthenticated) {
+            const storedUsername = localStorage.getItem("username");
+            const storedIsModerator = localStorage.getItem("isModerator") === "true";
+            if (storedUsername && token) {
                 dispatch(
                     restoreSession({
                         token: token,
-                        username: username,
-                        isModerator: isModerator,
-                    }
-                )
-            );
+                        username: storedUsername,
+                        isModerator: storedIsModerator,
+                    })
+                );
+            }
         }
-    }, [dispatch]);
+    }, [dispatch, token, isAuthenticated, username]);
 
     const handleLogout = () => {
         dispatch(logout());

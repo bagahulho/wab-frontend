@@ -18,8 +18,10 @@ const LoginForm: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const resultAction = await dispatch(loginUser(form));
+
         if (loginUser.fulfilled.match(resultAction)) {
-            navigate('/'); // Перенаправляем на главную после успешного входа
+            // Убедимся, что состояние обновлено
+            setTimeout(() => navigate('/'), 0); // Небольшая задержка для синхронизации
         }
     };
 

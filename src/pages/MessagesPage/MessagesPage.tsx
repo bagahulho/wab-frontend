@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-// import { AppDispatch, RootState } from '../../store';
-// import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './MessagesPage.css';
 import Header from "../../components/Header/Header.tsx";
@@ -54,9 +52,6 @@ const MessagesPage: React.FC = () => {
         return messages.filter((message) =>
             message.creator?.toLowerCase().includes(username.toLowerCase())
         );
-        // return messages.filter((message) =>
-        //     message.creator?.username?.toLowerCase().includes(username.toLowerCase())
-        // );
     };
 
     const updateStatus = async (id: number, status: string) => {

@@ -14,4 +14,8 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    outDir: 'dist', // Обязательно указываем папку для билда
+    emptyOutDir: false,
+  }
 });

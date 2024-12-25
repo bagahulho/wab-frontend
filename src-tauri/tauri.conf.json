@@ -5,9 +5,8 @@
   "identifier": "com.tauri-front.dev",
   "build": {
     "frontendDist": "../dist",
-    "devUrl": "http://172.20.10.2:3000/wab-frontend",
-    "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build"
+    "devUrl": "http://localhost:3000/wab-frontend",
+    "beforeDevCommand": "npm run dev"
   },
   "app": {
     "withGlobalTauri": true,

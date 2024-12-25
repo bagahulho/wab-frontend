@@ -28,25 +28,7 @@ const ChatsPage = () => {
             }
             const result = await response.json();
 
-            const chatsWithProperCase = result.chats.map((chat: {
-                ID: number,
-                Img: string,
-                Name: string,
-                Info: string,
-                Nickname: string,
-                Friends: number,
-                Subscribers: number
-            }) => ({
-                id: chat.ID,
-                img: chat.Img,
-                name: chat.Name,
-                info: chat.Info,
-                nickname: chat.Nickname,
-                friends: chat.Friends,
-                subscribers: chat.Subscribers
-            }));
-
-            setChats(chatsWithProperCase);
+            setChats(result.chats);
             setCount(result.draft_count || 0);
             setDraftID(result.draft_id);
             setIsMock(false);
@@ -54,7 +36,7 @@ const ChatsPage = () => {
             console.error("Fetch error:", error);
             if (!isMock) {
                 setIsMock(true);
-                setChats(Chats_Mock.filter(chat => chat.name.toLowerCase().includes(searchName.toLowerCase())));
+                setChats(Chats_Mock.filter(chat => chat.name?.toLowerCase().includes(searchName.toLowerCase())));
             }
         }
     }, [isMock]);

@@ -29,21 +29,7 @@ const ChatPage: React.FC = () => {
 
             const data = await response.json();
 
-            if (!data || !data.ID || !data.Img) {
-                throw new Error('Invalid data format');
-            }
-
-            const chatWithProperCase: Chat = {
-                id: data.ID,
-                img: data.Img,
-                name: data.Name,
-                info: data.Info,
-                nickname: data.Nickname,
-                friends: data.Friends,
-                subscribers: data.Subscribers,
-            };
-
-            setChat(chatWithProperCase);
+            setChat(data);
             setIsMock(false);
         } catch (error) {
             console.error('Error fetching chat:', error);

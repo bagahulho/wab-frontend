@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './MessagesPage.css';
 import Header from "../../components/Header/Header.tsx";
@@ -7,20 +7,26 @@ import {ROUTE_LABELS, ROUTES} from "../../Routes.tsx";
 import {BreadCrumbs} from "../../components/BreadCrumbs/BreadCrumbs.tsx";
 import {Configuration, DsMessageWithUsers, MessagesApi} from "../../api";
 import {RootState} from "../../store";
+import {
+    setEndDate,
+    setStartDate,
+    setStatus,
+    setUsername
+} from "../../store/slices/messagesFilterSlice.ts";
+
+interface DsMessageWithRead extends DsMessageWithUsers {
+    isRead?: boolean; // Новое поле
+}
 
 const MessagesPage: React.FC = () => {
     const { isModerator } = useSelector((state: RootState) => state.auth);
-
-    const [messages, setMessages] = useState<DsMessageWithUsers[]>([]);
+    const dispatch = useDispatch();
+    const [messages, setMessages] = useState<DsMessageWithRead[]>([]);
     const [allMessages, setAllMessages] = useState<DsMessageWithUsers[]>([]); // Все сообщения
     const navigate = useNavigate();
     const [error, setError] = useState<string | null>(null);
-    const [filters, setFilters] = useState({
-        status: '',
-        startDate: '',
-        endDate: '',
-        username: '',
-    });
+
+    const filters = useSelector((state: RootState) => state.messagesFilter);
 
     const api = new MessagesApi(
         new Configuration({
@@ -31,13 +37,27 @@ const MessagesPage: React.FC = () => {
 
     const fetchRequests = async () => {
         try {
-            const response = await api.messagesGet({
+            const baseMessages = await api.messagesGet({
                 status: filters.status,
                 startDate: filters.startDate,
                 endDate: filters.endDate,
             });
-            setAllMessages(response); // Сохраняем все сообщения
-            setMessages(filterByUsername(response, filters.username)); // Применяем фильтр по имени
+
+            const messagesWithRead: DsMessageWithRead[] = await Promise.all(
+                baseMessages.map(async (msg) => {
+                    const detail = await api.messagesIdGet({ id: msg.id });
+
+                    const anyRead = detail.chats?.some((chat) => chat.isRead === true);
+
+                    return {
+                        ...msg,
+                        isRead: Boolean(anyRead),
+                    };
+                })
+            );
+
+            setAllMessages(messagesWithRead);
+            setMessages(filterByUsername(messagesWithRead, filters.username));
             setError(null);
         } catch (err) {
             console.error("Ошибка загрузки заявок:", err);
@@ -52,6 +72,26 @@ const MessagesPage: React.FC = () => {
         return messages.filter((message) =>
             message.creator?.toLowerCase().includes(username.toLowerCase())
         );
+    };
+
+    const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        switch (name) {
+            case 'status':
+                dispatch(setStatus(value));
+                break;
+            case 'startDate':
+                dispatch(setStartDate(value));
+                break;
+            case 'endDate':
+                dispatch(setEndDate(value));
+                break;
+            case 'username':
+                dispatch(setUsername(value));
+                break;
+            default:
+                break;
+        }
     };
 
     const updateStatus = async (id: number, status: string) => {
@@ -79,14 +119,6 @@ const MessagesPage: React.FC = () => {
         return () => clearInterval(interval); // Очистка таймера
     }, [filters]); // Без фильтрации по username, чтобы не перезапрашивать данные
 
-    const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            [name]: value,
-        }));
-    };
-
 
     const handleRowClick = (id: number) => {
         navigate(`/messages/${id}`); // Перенаправление на страницу сообщения
@@ -110,9 +142,6 @@ const MessagesPage: React.FC = () => {
                             <option value="сформирован">сформирован</option>
                             <option value="отклонён">отклонён</option>
                             <option value="завершён">завершён</option>
-                            {isModerator && (
-                                <option value="удалён">удалён</option>
-                            )}
                         </select>
                     </div>
                     <div className="filter-group">
@@ -161,6 +190,7 @@ const MessagesPage: React.FC = () => {
                         {isModerator && (
                             <>
                                 <th>Создатель</th>
+                                <th>Прочитано</th>
                                 <th>Действия</th>
                             </>
                         )}
@@ -171,28 +201,34 @@ const MessagesPage: React.FC = () => {
                         messages.map((message) => (
                             <tr
                                 key={message.id}
-                                className="clickable-row"
-                                onClick={() => handleRowClick(message.id)}
                             >
-                                <td>{message.id}</td>
-                                <td>
+                                <td className="clickable-row"
+                                    onClick={() => handleRowClick(message.id)}>{message.id}</td>
+                                <td className="clickable-row"
+                                    onClick={() => handleRowClick(message.id)}>
                                     {message.status}
                                 </td>
-                                <td>{message.text}</td>
-                                <td>{new Date(message.dateCreate).toLocaleString()}</td>
-                                <td>
+                                <td className="clickable-row"
+                                    onClick={() => handleRowClick(message.id)}>{message.text}</td>
+                                <td className="clickable-row"
+                                    onClick={() => handleRowClick(message.id)}>{new Date(message.dateCreate).toLocaleString()}</td>
+                                <td className="clickable-row"
+                                    onClick={() => handleRowClick(message.id)}>
                                     {message.dateUpdate !== '0001-01-01T00:00:00Z'
                                         ? new Date(message.dateUpdate).toLocaleString()
                                         : ''}
                                 </td>
-                                <td>
+                                <td className="clickable-row"
+                                    onClick={() => handleRowClick(message.id)}>
                                     {message.dateFinish !== '0001-01-01T00:00:00Z'
                                         ? new Date(message.dateFinish).toLocaleString()
                                         : ''}
                                 </td>
                                 {isModerator && (
                                     <>
-                                        <td>{message.creator}</td>
+                                        <td className="clickable-row"
+                                            onClick={() => handleRowClick(message.id)}>{message.creator}</td>
+                                        <td>{message.isRead ? "Да" : "Нет"}</td>
                                         <td>{message.status === 'сформирован'
                                             ? <div className="status-buttons">
                                                 <button className="status-button" onClick={() => updateStatus(message.id!, "approved")}>

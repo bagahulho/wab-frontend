@@ -12,6 +12,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "./store";
 import ServicesPage from "./pages/ServicesPage/ServicesPage.tsx";
 import Page403 from "./pages/Page403/Page403.tsx";
+import ChatEditPage from "./pages/ChatEditPage/ChatEditPage.tsx";
 
 function App() {
     const { isModerator, isAuthenticated} = useSelector((state: RootState) => state.auth);
@@ -45,6 +46,14 @@ function App() {
                 <Route
                     path="/recipient-chats"
                         element={isModerator ? <ServicesPage /> : <Page403 />}
+                />
+                <Route
+                    path="/chats/edit/:id?"
+                    element={isModerator ? <ChatEditPage /> : <Page403 />}
+                />
+                <Route
+                    path="/chats/add"
+                    element={isModerator ? <ChatEditPage /> : <Page403 />}
                 />
                 <Route path="*" element={<Page404 />} />
             </Routes>

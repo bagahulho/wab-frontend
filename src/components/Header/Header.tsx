@@ -49,7 +49,8 @@ const Header: React.FC = () => {
                         {isAuthenticated ? (
                             <>
                                 {isModerator ?(
-                                    <Link to='/recipient-chats' className='nav__link'>Чаты</Link>
+                                    <><Link to='/recipient-chats' className='nav__link'>Таблица чатов</Link><Link to='/chats'
+                                                                                                         className='nav__link'>Чаты</Link></>
                                 ): (
                                     <Link to='/chats' className='nav__link'>Чаты</Link>
                                 )}
@@ -74,7 +75,8 @@ const Header: React.FC = () => {
                             {isAuthenticated ? (
                                 <>
                                     {isModerator ?(
-                                        <Link to='/recipient-chats' className='nav__link'>Чаты</Link>
+                                        <><Link to='/recipient-chats' className='nav__link'>Таблица чатов</Link><Link to='/chats'
+                                                                                                             className='nav__link'>Чаты</Link></>
                                     ): (
                                         <Link to='/chats' className='nav__link'>Чаты</Link>
                                     )}

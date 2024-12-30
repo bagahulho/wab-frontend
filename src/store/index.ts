@@ -3,6 +3,7 @@ import filterReducer from './slices/filterSlice';
 import regReducer from "./slices/regSlice.ts";
 import authReducer from "./slices/authSlice.ts";
 import messagesReducer from "./slices/messagesSlice.ts";
+import messagesFilterReducer from "./slices/messagesFilterSlice.ts";
 import {useDispatch} from "react-redux";
 
 const store = configureStore({
@@ -10,7 +11,8 @@ const store = configureStore({
         filter: filterReducer,
         reg: regReducer,
         auth: authReducer,
-        messages: messagesReducer
+        messages: messagesReducer,
+        messagesFilter: messagesFilterReducer,
     },
 });
 
